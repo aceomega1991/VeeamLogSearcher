@@ -56,6 +56,7 @@ def loadConfig(customPage):
         if customPage in item:
             if item.is_file():
                 with open(customPage, 'r') as configPage:
+                    #stopped here out of frustration
                     for line in configPage:
                         if load == False:
                             if '!' in line:
