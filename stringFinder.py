@@ -6,7 +6,6 @@
 
 
 import os
-import re
 
 allFiles = []
 checkedFolders = []
@@ -73,7 +72,7 @@ def searchNames(name):
     return logFiles
 
 
-#Looks into the files and finds the string, pushes to a dictionary and returns this list
+#Looks into all files and finds the string, pushes to a dictionary and returns this list
 #By default it looks into all files with a .log extension, but can be changed to anything by setting name variable
 def findStringInFile(search, name='.log'):
     errors = dict()
@@ -115,7 +114,7 @@ def printNice(errorList):
 def writeToFile(strings):
     os.chdir(globalPath)
     newFile = open('summary.log', 'a')
-    newFile.write(('=' * 80) + 'Starting New Session' + ('=' * 80)
+    newFile.write(('=' * 80) + 'Starting New Session' + ('=' * 80))
     if len(strings) != 0:
         for key in strings:
             newFile.write('\n')
@@ -127,8 +126,8 @@ def writeToFile(strings):
             newFile.write('\n')
             newFile.write(strings[key])
     else:
-        newFile.write('Not found in files!')
-    newFile.write(('=' * 80) + 'End Log Session' + ('=' * 80)
+        newFile.write('\nNot found in files!')
+    newFile.write("\n" + ('=' * 80) + 'End Log Session' + ('=' * 80))
     newFile.close()
     print('Done')
 
