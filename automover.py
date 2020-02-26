@@ -6,31 +6,24 @@ import os, zipfile, shutil, traceback, time, schedule, threading, re
 path = str(os.path.join(Path.home(), 'Downloads'))
 destination = str(os.path.join(Path.home(), 'Documents'))
 
-def automover():
-	global path, destination
+def fileMover(dFile, case):
 	os.chdir(path)
 	while True:
 		try:
-			if len(checkFiles(path)) >= 1:
-				for file in checkFiles(path):
-					print('File Found: {}'.format(file))
-				case = input('Case Number?\n')
-				os.system('cls')
-				checkProgress(path)
-				endpath = os.path.join(destination, case)
-				if not os.path.isdir(endpath):
-					os.mkdir(endpath)
-				for file in checkFiles(path):
-					if zipfile.is_zipfile(file):
-						newPath = uniquePath(endpath, os.path.splitext(file)[0])
-						Archive(file).extractall(newPath, auto_create_dir=True)
-						os.remove(file)
-					else:
-						shutil.move(file, os.path.join(endpath, file))
-			else:
-				time.sleep(5)
+			testFileAccess(dFile)
+			break
 		except Exception:
-			traceback.print_exc()
+			time.sleep(1)
+	endpath = os.path.join(destination, case)
+	if not os.path.isdir(endpath):
+		os.mkdir(endpath)
+	for file in checkFiles(path):
+		if zipfile.is_zipfile(file):
+			newPath = uniquePath(endpath, os.path.splitext(file)[0])
+			Archive(file).extractall(newPath, auto_create_dir=True)
+			os.remove(file)
+		else:
+			shutil.move(file, os.path.join(endpath, file))
 
 def autoClear():
 	global destination
@@ -42,9 +35,9 @@ def autoClear():
 			pass
 	with open(configFile, 'r+') as read:
 		for line in read.readlines():
-			stripLine = line.replace('\n', '')
+			stripLine = line.splitlines()
 			if stripLine in folders:
-				shutil.rmtree(line)
+				shutil.rmtree(splitline)
 	os.remove(configFile)
 	with open(configFile, 'w+') as create:
 		pass
@@ -89,3 +82,30 @@ aMover = threading.Thread(target=automover)
 
 aClear.start()
 aMover.start()
+
+
+
+# def automover(case):
+# 	os.chdir(path)
+# 	while True:
+# 		try:
+# 			if len(checkFiles(path)) >= 1:
+# 				for file in checkFiles(path):
+# 					print('File Found: {}'.format(file))
+# 				case = input('Case Number?\n')
+# 				os.system('cls')
+# 				checkProgress(path)
+# 				endpath = os.path.join(destination, case)
+# 				if not os.path.isdir(endpath):
+# 					os.mkdir(endpath)
+# 				for file in checkFiles(path):
+# 					if zipfile.is_zipfile(file):
+# 						newPath = uniquePath(endpath, os.path.splitext(file)[0])
+# 						Archive(file).extractall(newPath, auto_create_dir=True)
+# 						os.remove(file)
+# 					else:
+# 						shutil.move(file, os.path.join(endpath, file))
+# 			else:
+# 				time.sleep(5)
+# 		except Exception:
+# 			traceback.print_exc()
